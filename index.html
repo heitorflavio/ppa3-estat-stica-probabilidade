@@ -9,6 +9,18 @@
       rel="stylesheet"
     />
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+      /* Certifica-se de que o canvas ocupa 100% do contêiner */
+      canvas {
+        max-width: 100%;
+        max-height: 100%;
+      }
+
+      /* Tamanho mínimo para gráficos de pizza */
+      .grafico-pizza {
+        min-height: 300px; /* Ajuste conforme necessário */
+      }
+    </style>
   </head>
   <body>
     <!-- Navbar -->
@@ -51,7 +63,7 @@
             <div class="card-header">
               <h2>Intervalos de Altura</h2>
             </div>
-            <div class="card-body">
+            <div class="card-body grafico-pizza">
               <canvas id="graficoAltura"></canvas>
             </div>
           </div>
@@ -61,7 +73,7 @@
             <div class="card-header">
               <h2>Intervalos de Envergadura</h2>
             </div>
-            <div class="card-body">
+            <div class="card-body grafico-pizza">
               <canvas id="graficoEnvergadura"></canvas>
             </div>
           </div>
@@ -90,25 +102,24 @@
               return frequencias;
             }
 
-            const intervalosAltura = [
-              [1.6, 1.65],
-              [1.66, 1.7],
-              [1.71, 1.75],
-              [1.76, 1.8],
-              [1.81, 1.85],
-              [1.86, 1.9],
-            ];
+            // Função para gerar intervalos dinâmicos
+            function gerarIntervalos(dados, numIntervalos) {
+              const min = Math.min(...dados);
+              const max = Math.max(...dados);
+              const intervaloTamanho = (max - min) / numIntervalos;
 
-            const intervalosEnvergadura = [
-              [1.5, 1.55],
-              [1.56, 1.6],
-              [1.61, 1.65],
-              [1.66, 1.7],
-              [1.71, 1.75],
-              [1.76, 1.8],
-              [1.81, 1.85],
-              [1.86, 1.9],
-            ];
+              const intervalos = [];
+              for (let i = 0; i < numIntervalos; i++) {
+                intervalos.push([
+                  (min + intervaloTamanho * i).toFixed(2),
+                  (min + intervaloTamanho * (i + 1)).toFixed(2),
+                ]);
+              }
+              return intervalos;
+            }
+
+            const intervalosAltura = gerarIntervalos(alturas, 6); // 6 intervalos
+            const intervalosEnvergadura = gerarIntervalos(envergaduras, 8); // 8 intervalos
 
             const frequenciasAltura = calcularFrequencia(
               alturas,
@@ -152,6 +163,7 @@
               },
               options: {
                 responsive: true,
+                maintainAspectRatio: false,
                 plugins: {
                   legend: {
                     position: "top",
@@ -159,12 +171,6 @@
                   title: {
                     display: true,
                     text: "Distribuição de Altura",
-                  },
-                  datalabels: {
-                    anchor: "end",
-                    align: "end",
-                    formatter: (value) => (value > 0 ? value : ""),
-                    color: "#000",
                   },
                 },
               },
@@ -197,6 +203,7 @@
               },
               options: {
                 responsive: true,
+                maintainAspectRatio: false,
                 plugins: {
                   legend: {
                     position: "top",
@@ -204,12 +211,6 @@
                   title: {
                     display: true,
                     text: "Distribuição de Envergadura",
-                  },
-                  datalabels: {
-                    anchor: "end",
-                    align: "end",
-                    formatter: (value) => (value > 0 ? value : ""),
-                    color: "#000",
                   },
                 },
               },
