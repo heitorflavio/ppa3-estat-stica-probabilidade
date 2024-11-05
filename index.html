@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Gráficos</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  </head>
+  <body>
+    <!-- Navbar -->
+    <nav class="navbar bg-primary" data-bs-theme="dark">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="index.html">
+          <b> PP3 </b>
+        </a>
+        <ul class="nav">
+          <li class="nav-item">
+            <a class="nav-link text-white" href="index.html">Gráficos</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link text-white" href="tabelas.html">Tabela</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link text-white" href="intervalos.html">Intervalos</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link text-white" href="resumo.html">Resumo</a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+
+    <!-- Gráficos -->
+    <div class="container mt-5" id="graficos">
+      <div class="row">
+        <div class="col-sm-12">
+          <div class="form-group mb-3">
+            <label for="tipoGrafico">Selecione o Tipo de Gráfico:</label>
+            <select class="form-select" id="tipoGrafico">
+              <option value="bar">Gráfico de Barras</option>
+              <option value="pie">Gráfico de Pizza</option>
+            </select>
+          </div>
+        </div>
+        <div class="col-sm-12 col-md-6">
+          <div class="card mb-4">
+            <div class="card-header">
+              <h2>Intervalos de Altura</h2>
+            </div>
+            <div class="card-body">
+              <canvas id="graficoAltura"></canvas>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-12 col-md-6">
+          <div class="card">
+            <div class="card-header">
+              <h2>Intervalos de Envergadura</h2>
+            </div>
+            <div class="card-body">
+              <canvas id="graficoEnvergadura"></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        fetch("database.json")
+          .then((response) => response.json())
+          .then((data) => {
+            const alturas = data.map((row) => parseFloat(row.altura));
+            const envergaduras = data.map((row) => parseFloat(row.envergadura));
+
+            function calcularFrequencia(dados, intervalos) {
+              const frequencias = new Array(intervalos.length).fill(0);
+              dados.forEach((dado) => {
+                for (let i = 0; i < intervalos.length; i++) {
+                  if (dado >= intervalos[i][0] && dado < intervalos[i][1]) {
+                    frequencias[i]++;
+                    break;
+                  }
+                }
+              });
+              return frequencias;
+            }
+
+            const intervalosAltura = [
+              [1.6, 1.65],
+              [1.66, 1.7],
+              [1.71, 1.75],
+              [1.76, 1.8],
+              [1.81, 1.85],
+              [1.86, 1.9],
+            ];
+
+            const intervalosEnvergadura = [
+              [1.5, 1.55],
+              [1.56, 1.6],
+              [1.61, 1.65],
+              [1.66, 1.7],
+              [1.71, 1.75],
+              [1.76, 1.8],
+              [1.81, 1.85],
+              [1.86, 1.9],
+            ];
+
+            const frequenciasAltura = calcularFrequencia(
+              alturas,
+              intervalosAltura
+            );
+            const frequenciasEnvergadura = calcularFrequencia(
+              envergaduras,
+              intervalosEnvergadura
+            );
+
+            const ctxAltura = document
+              .getElementById("graficoAltura")
+              .getContext("2d");
+            const ctxEnvergadura = document
+              .getElementById("graficoEnvergadura")
+              .getContext("2d");
+
+            // Inicializando gráficos
+            const graficoAltura = new Chart(ctxAltura, {
+              type: "bar",
+              data: {
+                labels: intervalosAltura.map(
+                  (intervalo) => `${intervalo[0]} - ${intervalo[1]} m`
+                ),
+                datasets: [
+                  {
+                    label: "Frequência de Altura",
+                    data: frequenciasAltura,
+                    backgroundColor: [
+                      "rgba(255, 99, 132, 0.6)",
+                      "rgba(54, 162, 235, 0.6)",
+                      "rgba(255, 206, 86, 0.6)",
+                      "rgba(75, 192, 192, 0.6)",
+                      "rgba(153, 102, 255, 0.6)",
+                      "rgba(255, 159, 64, 0.6)",
+                    ],
+                    borderWidth: 1,
+                    borderColor: "rgba(0, 0, 0, 1)",
+                  },
+                ],
+              },
+              options: {
+                responsive: true,
+                plugins: {
+                  legend: {
+                    position: "top",
+                  },
+                  title: {
+                    display: true,
+                    text: "Distribuição de Altura",
+                  },
+                  datalabels: {
+                    anchor: "end",
+                    align: "end",
+                    formatter: (value) => (value > 0 ? value : ""),
+                    color: "#000",
+                  },
+                },
+              },
+            });
+
+            const graficoEnvergadura = new Chart(ctxEnvergadura, {
+              type: "bar",
+              data: {
+                labels: intervalosEnvergadura.map(
+                  (intervalo) => `${intervalo[0]} - ${intervalo[1]} m`
+                ),
+                datasets: [
+                  {
+                    label: "Frequência de Envergadura",
+                    data: frequenciasEnvergadura,
+                    backgroundColor: [
+                      "rgba(255, 99, 132, 0.6)",
+                      "rgba(54, 162, 235, 0.6)",
+                      "rgba(255, 206, 86, 0.6)",
+                      "rgba(75, 192, 192, 0.6)",
+                      "rgba(153, 102, 255, 0.6)",
+                      "rgba(255, 159, 64, 0.6)",
+                      "rgba(201, 203, 207, 0.6)",
+                      "rgba(255, 105, 180, 0.6)",
+                    ],
+                    borderWidth: 1,
+                    borderColor: "rgba(0, 0, 0, 1)",
+                  },
+                ],
+              },
+              options: {
+                responsive: true,
+                plugins: {
+                  legend: {
+                    position: "top",
+                  },
+                  title: {
+                    display: true,
+                    text: "Distribuição de Envergadura",
+                  },
+                  datalabels: {
+                    anchor: "end",
+                    align: "end",
+                    formatter: (value) => (value > 0 ? value : ""),
+                    color: "#000",
+                  },
+                },
+              },
+            });
+
+            // Função para atualizar os gráficos
+            function atualizarGraficos(tipo) {
+              graficoAltura.config.type = tipo;
+              graficoEnvergadura.config.type = tipo;
+              graficoAltura.update();
+              graficoEnvergadura.update();
+            }
+
+            // Event listener para o seletor de tipo de gráfico
+            document
+              .getElementById("tipoGrafico")
+              .addEventListener("change", function () {
+                const tipoSelecionado = this.value;
+                atualizarGraficos(tipoSelecionado);
+              });
+          });
+      });
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+  </body>
+</html>

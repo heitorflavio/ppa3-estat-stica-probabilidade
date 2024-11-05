@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Resumo</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <!-- Navbar -->
+    <nav class="navbar bg-primary" data-bs-theme="dark">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="index.html">
+          <b> PP3 </b>
+        </a>
+        <ul class="nav">
+          <li class="nav-item">
+            <a class="nav-link text-white" href="index.html">Gráficos</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link text-white" href="tabelas.html">Tabela</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link text-white" href="intervalos.html">Intervalos</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link text-white" href="resumo.html">Resumo</a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+
+    <!-- Tabela -->
+    <div class="container mt-5">
+      <div class="card">
+        <div class="card-header">
+          <h2>Resumo</h2>
+        </div>
+        <div class="card-body">
+          <div id="resumo"></div>
+          <h5>Análise Estatística</h5>
+          <ul id="analise-estatistica"></ul>
+          <h5>Motivo da Coleta e Pesquisa</h5>
+          <p>
+            A coleta desses dados foi realizada para aplicar conceitos de
+            estatística e probabilidade na prática, permitindo que os alunos
+            entendam e apliquem conceitos estatísticos, identifiquem tendências
+            e padrões, desenvolvam habilidades analíticas e fomentem a discussão
+            científica.
+          </p>
+          <table class="table mt-4" id="tabela">
+            <thead>
+              <tr>
+                <th>Nome</th>
+                <th>Altura</th>
+                <th>Envergadura</th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- Dados da tabela serão inseridos aqui -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        fetch("database.json")
+          .then((response) => response.json())
+          .then((data) => {
+            const tbody = document.querySelector("#tabela tbody");
+            let totalAltura = 0;
+            let totalEnvergadura = 0;
+            const alturas = [];
+            const envergaduras = [];
+            const nomes = {};
+
+            data.forEach((row) => {
+              const tr = document.createElement("tr");
+              tr.innerHTML = `<td>${row.nome}</td><td>${row.altura}m</td><td>${row.envergadura}m</td>`;
+              tbody.appendChild(tr);
+
+              // Coletar dados para análise
+              alturas.push(parseFloat(row.altura));
+              envergaduras.push(parseFloat(row.envergadura));
+              totalAltura += parseFloat(row.altura);
+              totalEnvergadura += parseFloat(row.envergadura);
+
+              // Contar duplicidade de nomes
+              nomes[row.nome] = (nomes[row.nome] || 0) + 1;
+            });
+
+            // Cálculo de médias
+            const mediaAltura = (totalAltura / data.length).toFixed(2);
+            const mediaEnvergadura = (totalEnvergadura / data.length).toFixed(
+              2
+            );
+            const alturaMin = Math.min(...alturas).toFixed(2);
+            const alturaMax = Math.max(...alturas).toFixed(2);
+            const enverguraMin = Math.min(...envergaduras).toFixed(2);
+            const enverguraMax = Math.max(...envergaduras).toFixed(2);
+
+            // Atualizar o resumo
+            document.getElementById("resumo").innerHTML = `
+              <p>
+                Os dados apresentados são uma amostra das alturas e envergaduras de ${data.length} alunos da turma do terceiro período de Engenharia da Computação, coletados durante uma aula de Estatística e Probabilidade. A tabela contém informações sobre o nome, altura (em metros) e envergadura (em metros) de cada aluno.
+              </p>
+            `;
+
+            // Atualizar a análise estatística
+            const analiseEstatistica = document.getElementById(
+              "analise-estatistica"
+            );
+            analiseEstatistica.innerHTML = `
+              <li><strong>Altura:</strong> A altura dos alunos varia de ${alturaMin} m a ${alturaMax} m, com uma média de aproximadamente ${mediaAltura} m.</li>
+              <li><strong>Envergadura:</strong> As envergaduras variam de ${enverguraMin} m a ${enverguraMax} m, com uma média de cerca de ${mediaEnvergadura} m.</li>
+              <li><strong>Duplicidade de Nomes:</strong> ${
+                Object.keys(nomes).length
+              } nomes únicos foram registrados, e alguns nomes aparecem mais de uma vez.</li>
+            `;
+          });
+      });
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+  </body>
+</html>

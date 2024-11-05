@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Editor JSON com Ace Editor</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" />
+    <style>
+        #editor {
+          height: 100vh;
+          width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar bg-primary" data-bs-theme="dark">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="index.html">
+          <b> PP3 </b>
+        </a>
+        <ul class="nav">
+          <li class="nav-item">
+            <a class="nav-link text-white" href="index.html">Gráficos</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link text-white" href="tabelas.html">Tabela</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link text-white" href="intervalos.html">Intervalos</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link text-white" href="resumo.html">Resumo</a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+
+    <div class="container mt-5">
+        <div class="card">
+            <div class="card-header">
+                <h2>Editor Json</h2>
+            </div>
+            <div class="card-body">
+                <div id="editor"></div>
+                <div class="d-flex justify-content-end">
+                  <button class="btn btn-primary mt-3" id="saveButton">Salvar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Carregamento do Ace Editor -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.12/ace.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            // Inicializar o Ace Editor
+            const editor = ace.edit("editor");
+            editor.setTheme("ace/theme/github");
+            editor.session.setMode("ace/mode/json");
+
+            // Carregar JSON do arquivo
+            fetch("database.json")
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error("Erro ao carregar o arquivo: " + response.statusText);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    editor.setValue(JSON.stringify(data, null, 2), -1); // Define o valor do editor
+                })
+                .catch(error => {
+                    console.error("Erro:", error);
+                    alert("Não foi possível carregar o arquivo JSON. Verifique o console para mais detalhes.");
+                });
+
+            // Salvar o JSON editado
+            document.getElementById("saveButton").addEventListener("click", function() {
+                const jsonString = editor.getValue();
+                const blob = new Blob([jsonString], { type: "application/json" });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement("a");
+                a.href = url;
+                a.download = "database.json";
+                a.click();
+                URL.revokeObjectURL(url);
+            });
+        });
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

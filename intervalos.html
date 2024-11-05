@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Intervalos</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <!-- Navbar -->
+    <nav class="navbar bg-primary" data-bs-theme="dark">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="index.html">
+          <b> PP3 </b>
+        </a>
+        <ul class="nav">
+          <li class="nav-item">
+            <a class="nav-link text-white" href="index.html">Gráficos</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link text-white" href="tabelas.html">Tabela</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link text-white" href="intervalos.html">Intervalos</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link text-white" href="resumo.html">Resumo</a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+
+    <!-- Tabelas -->
+    <div class="container mt-5">
+      <!-- Tabela de Altura -->
+      <div class="card mb-4">
+        <div class="card-header">
+          <h2 id="tabelas">Intervalos de Altura</h2>
+        </div>
+        <div class="card-body">
+          <table class="table table-striped" id="tabelaAltura">
+            <thead>
+              <tr>
+                <th>Intervalo (m)</th>
+                <th>Frequência</th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- Os dados serão inseridos aqui dinamicamente -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Tabela de Envergadura -->
+      <div class="card">
+        <div class="card-header">
+          <h2>Intervalos de Envergadura</h2>
+        </div>
+        <div class="card-body">
+          <table class="table table-striped" id="tabelaEnvergadura">
+            <thead>
+              <tr>
+                <th>Intervalo (m)</th>
+                <th>Frequência</th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- Os dados serão inseridos aqui dinamicamente -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        fetch("database.json")
+          .then((response) => response.json())
+          .then((data) => {
+            // Extraindo alturas e envergaduras
+            const alturas = data.map((row) => parseFloat(row.altura));
+            const envergaduras = data.map((row) => parseFloat(row.envergadura));
+
+            // Função para calcular a distribuição de frequência
+            function calcularFrequencia(dados, intervalos) {
+              const frequencias = new Array(intervalos.length).fill(0);
+              dados.forEach((dado) => {
+                for (let i = 0; i < intervalos.length; i++) {
+                  if (dado >= intervalos[i][0] && dado < intervalos[i][1]) {
+                    frequencias[i]++;
+                    break; // sai do loop após encontrar o intervalo correto
+                  }
+                }
+              });
+              return frequencias;
+            }
+
+            // Definindo intervalos de classe
+            const intervalosAltura = [
+              [1.6, 1.65],
+              [1.66, 1.7],
+              [1.71, 1.75],
+              [1.76, 1.8],
+              [1.81, 1.85],
+              [1.86, 1.9],
+            ];
+
+            const intervalosEnvergadura = [
+              [1.5, 1.55],
+              [1.56, 1.6],
+              [1.61, 1.65],
+              [1.66, 1.7],
+              [1.71, 1.75],
+              [1.76, 1.8],
+              [1.81, 1.85],
+              [1.86, 1.9],
+            ];
+
+            // Calculando frequências
+            const frequenciasAltura = calcularFrequencia(
+              alturas,
+              intervalosAltura
+            );
+            const frequenciasEnvergadura = calcularFrequencia(
+              envergaduras,
+              intervalosEnvergadura
+            );
+
+            // Populando tabela de altura
+            const tbodyAltura = document.querySelector("#tabelaAltura tbody");
+            intervalosAltura.forEach((intervalo, index) => {
+              const tr = document.createElement("tr");
+              tr.innerHTML = `<td>${intervalo[0]} - ${intervalo[1]}</td><td>${frequenciasAltura[index]}</td>`;
+              tbodyAltura.appendChild(tr);
+            });
+
+            // Populando tabela de envergadura
+            const tbodyEnvergadura = document.querySelector(
+              "#tabelaEnvergadura tbody"
+            );
+            intervalosEnvergadura.forEach((intervalo, index) => {
+              const tr = document.createElement("tr");
+              tr.innerHTML = `<td>${intervalo[0]} - ${intervalo[1]}</td><td>${frequenciasEnvergadura[index]}</td>`;
+              tbodyEnvergadura.appendChild(tr);
+            });
+          });
+      });
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+  </body>
+</html>

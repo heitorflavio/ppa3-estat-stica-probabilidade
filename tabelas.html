@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tabela de Altura e Envergadura</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <style>
+      .sort-icon {
+        cursor: pointer;
+        margin-left: 5px;
+      }
+      .sorted-asc:after {
+        content: " ▲";
+      }
+      .sorted-desc:after {
+        content: " ▼";
+      }
+    </style>
+  </head>
+  <body>
+    <nav class="navbar bg-primary" data-bs-theme="dark">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="index.html">
+          <b> PP3 </b>
+        </a>
+        <ul class="nav">
+          <li class="nav-item">
+            <a class="nav-link text-white" href="index.html">Gráficos</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link text-white" href="tabelas.html">Tabela</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link text-white" href="intervalos.html">Intervalos</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link text-white" href="resumo.html">Resumo</a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+
+    <!-- Tabela -->
+    <div class="container mt-5">
+      <div class="card">
+        <div class="card-header">
+          <div class="d-flex justify-content-between">
+            <h2 id="tabelas">Tabela de Altura e Envergadura</h2>
+            <div>
+              <button class="btn btn-sm btn-secondary" onclick="clearFilters()">
+                Limpar Filtros
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <table class="table table-striped" id="tabela">
+            <thead>
+              <tr>
+                <th>Nome</th>
+                <th onclick="sortTable(1, this)" style="cursor: pointer">
+                  Altura <span class="sort-icon"></span>
+                </th>
+                <th onclick="sortTable(2, this)" style="cursor: pointer">
+                  Envergadura <span class="sort-icon"></span>
+                </th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        fetch("database.json")
+          .then((response) => response.json())
+          .then((data) => {
+            const tbody = document.querySelector("#tabela tbody");
+            data.forEach((row) => {
+              const tr = document.createElement("tr");
+              tr.innerHTML = `<td>${row.nome}</td><td>${row.altura}m</td><td>${row.envergadura}m</td>`;
+              tbody.appendChild(tr);
+            });
+          });
+
+        let currentSortColumn = null;
+        let sortDirection = "asc";
+
+        window.sortTable = function (columnIndex, header) {
+          const tbody = document.querySelector("#tabela tbody");
+          const rows = Array.from(tbody.rows);
+
+          if (currentSortColumn === columnIndex) {
+            sortDirection = sortDirection === "asc" ? "desc" : "asc";
+          } else {
+            sortDirection = "asc";
+          }
+          currentSortColumn = columnIndex;
+
+          rows.sort((a, b) => {
+            const aText = a.cells[columnIndex].textContent.replace("m", "");
+            const bText = b.cells[columnIndex].textContent.replace("m", "");
+
+            return sortDirection === "asc"
+              ? parseFloat(aText) - parseFloat(bText)
+              : parseFloat(bText) - parseFloat(aText);
+          });
+
+          tbody.innerHTML = "";
+          rows.forEach((row) => tbody.appendChild(row));
+
+          const sortIcons = document.querySelectorAll(".sort-icon");
+          sortIcons.forEach((icon) =>
+            icon.classList.remove("sorted-asc", "sorted-desc")
+          );
+          header
+            .querySelector(".sort-icon")
+            .classList.add(
+              sortDirection === "asc" ? "sorted-asc" : "sorted-desc"
+            );
+        };
+
+        window.clearFilters = function () {
+          const tbody = document.querySelector("#tabela tbody");
+          const originalData = [];
+
+          fetch("database.json")
+            .then((response) => response.json())
+            .then((data) => {
+              data.forEach((row) => {
+                const tr = document.createElement("tr");
+                tr.innerHTML = `<td>${row.nome}</td><td>${row.altura}m</td><td>${row.envergadura}m</td>`;
+                originalData.push(tr);
+              });
+
+              tbody.innerHTML = "";
+              originalData.forEach((row) => tbody.appendChild(row));
+            });
+
+          currentSortColumn = null;
+          sortDirection = "asc";
+
+          const sortIcons = document.querySelectorAll(".sort-icon");
+          sortIcons.forEach((icon) =>
+            icon.classList.remove("sorted-asc", "sorted-desc")
+          );
+        };
+      });
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+  </body>
+</html>
