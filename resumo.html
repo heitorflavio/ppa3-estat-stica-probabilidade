@@ -51,6 +51,194 @@
             e padrões, desenvolvam habilidades analíticas e fomentem a discussão
             científica.
           </p>
+        </div>
+      </div>
+
+      <div class="card my-3">
+        <div class="card-header">
+          <h2>Resumo Estatístico</h2>
+        </div>
+        <div class="card-body">
+          <h5>Cálculo de Média, Mediana e Moda</h5>
+          <ul id="calculos-estatisticos"></ul>
+          <hr />
+          <h5>Como Calcular a Média</h5>
+          <p>
+            A média é a soma de todos os valores dividida pela quantidade de
+            valores. A fórmula para calcular a média é:
+          </p>
+          <pre><code>
+Média = (Soma de todos os valores) / (Quantidade de valores)
+            </code></pre>
+          <p>
+            Exemplo com as Alturas: Se tivermos as alturas 1.75, 1.80, 1.85, a
+            média será:
+          </p>
+          <pre><code>
+Média = (1.75 + 1.80 + 1.85) / 3 = 1.80
+            </code></pre>
+
+          <h5>Como Calcular a Mediana</h5>
+          <p>
+            A mediana é o valor que se encontra no meio de um conjunto de dados
+            ordenados. Se o número de dados for ímpar, a mediana é o valor
+            central. Se o número for par, é a média dos dois valores centrais. A
+            fórmula para calcular a mediana é:
+          </p>
+          <pre><code>
+Mediana = valor no meio dos dados ordenados
+            </code></pre>
+          <p>
+            Exemplo com as Alturas (dados ordenados): 1.60, 1.70, 1.80. Como há
+            3 valores (número ímpar), a mediana é o valor central, que é 1.70.
+          </p>
+
+          <h5>Como Calcular a Moda</h5>
+          <p>
+            A moda é o valor que mais se repete em um conjunto de dados. Se
+            houver mais de um valor com a mesma frequência máxima, o conjunto de
+            dados terá mais de uma moda. A fórmula para calcular a moda é:
+          </p>
+          <pre><code>
+Moda = valor com maior frequência
+            </code></pre>
+          <p>
+            Exemplo com as Alturas: Se tivermos as alturas 1.75, 1.75, 1.80, a
+            moda é 1.75, pois é o valor que mais se repete.
+          </p>
+        </div>
+      </div>
+
+      <div class="card my-3">
+        <div class="card-header">
+          <h2>Como Calcular as Frequências</h2>
+        </div>
+        <div class="card-body">
+          <h5>Passo a Passo para Calcular as Frequências</h5>
+          <p>
+            Para calcular as frequências de um conjunto de dados, siga os
+            seguintes passos:
+          </p>
+          <ol>
+            <li>
+              <strong>Organizar os dados:</strong> Ordene os dados de forma
+              crescente. Por exemplo, se você tiver alturas de alunos,
+              coloque-as em ordem do menor para o maior.
+            </li>
+            <li>
+              <strong>Definir os intervalos:</strong> Divida os dados em
+              intervalos de acordo com a faixa de valores. Por exemplo, para as
+              alturas, você pode usar intervalos como 1.60 - 1.64, 1.65 - 1.69,
+              etc.
+            </li>
+            <li>
+              <strong>Contar as ocorrências:</strong> Para cada intervalo, conte
+              quantos valores caem dentro dele. Esse número é a frequência do
+              intervalo. Por exemplo, se houver 5 alunos com altura entre 1.70 e
+              1.74, a frequência desse intervalo é 5.
+            </li>
+            <li>
+              <strong>Calcular a Frequência Relativa:</strong> A frequência
+              relativa (\( p_i \)) de um intervalo é a razão entre a frequência
+              do intervalo e o número total de observações. Use a fórmula:
+              <pre><code>p_i = f_i / N</code></pre>
+              Onde \( f_i \) é a frequência do intervalo e \( N \) é o número
+              total de dados.
+            </li>
+            <li>
+              <strong>Calcular a Frequência Acumulada:</strong> A frequência
+              acumulada (\( F_i \)) é a soma das frequências dos intervalos até
+              o intervalo \( i \). Use a fórmula:
+              <pre><code>F_i = Σ f_j</code></pre>
+              Onde \( f_j \) é a frequência de cada intervalo até o intervalo \(
+              i \).
+            </li>
+          </ol>
+
+          <h5>Exemplo Prático</h5>
+          <p>
+            Suponha que você tenha os seguintes dados de altura (em metros) de
+            10 alunos:
+          </p>
+          <pre><code>
+          1.60, 1.65, 1.70, 1.72, 1.75, 1.75, 1.80, 1.80, 1.85, 1.90
+          </code></pre>
+          <p>Para calcular as frequências, você pode seguir esses passos:</p>
+          <ol>
+            <li>
+              Organize os dados:
+              <code
+                >1.60, 1.65, 1.70, 1.72, 1.75, 1.75, 1.80, 1.80, 1.85,
+                1.90</code
+              >
+            </li>
+            <li>
+              Defina os intervalos: Por exemplo: 1.60 - 1.64, 1.65 - 1.69, 1.70
+              - 1.74, 1.75 - 1.79, 1.80 - 1.84, 1.85 - 1.90.
+            </li>
+            <li>
+              Conte as frequências:
+              <ul>
+                <li>1.60 - 1.64: 1 aluno</li>
+                <li>1.65 - 1.69: 1 aluno</li>
+                <li>1.70 - 1.74: 2 alunos</li>
+                <li>1.75 - 1.79: 2 alunos</li>
+                <li>1.80 - 1.84: 2 alunos</li>
+                <li>1.85 - 1.90: 2 alunos</li>
+              </ul>
+            </li>
+            <li>
+              Calcule as frequências relativas (exemplo para o intervalo 1.60 -
+              1.64):
+              <pre><code>p_1 = f_1 / N = 1 / 10 = 0.1</code></pre>
+            </li>
+            <li>Calcule as frequências acumuladas:</li>
+            <ul>
+              <li>
+                <strong>F_1:</strong> A frequência acumulada do primeiro
+                intervalo (1.60 - 1.64) é igual à sua frequência, ou seja:
+                <pre><code>F_1 = 1</code></pre>
+              </li>
+              <li>
+                <strong>F_2:</strong> A frequência acumulada do segundo
+                intervalo (1.65 - 1.69) é a soma das frequências do primeiro e
+                segundo intervalos:
+                <pre><code>F_2 = 1 + 1 = 2</code></pre>
+              </li>
+              <li>
+                <strong>F_3:</strong> A frequência acumulada do terceiro
+                intervalo (1.70 - 1.74) é a soma das frequências dos três
+                primeiros intervalos:
+                <pre><code>F_3 = 1 + 1 + 2 = 4</code></pre>
+              </li>
+              <li>
+                <strong>F_4:</strong> A frequência acumulada do quarto intervalo
+                (1.75 - 1.79) é a soma das frequências dos quatro primeiros
+                intervalos:
+                <pre><code>F_4 = 1 + 1 + 2 + 2 = 6</code></pre>
+              </li>
+              <li>
+                <strong>F_5:</strong> A frequência acumulada do quinto intervalo
+                (1.80 - 1.84) é a soma das frequências dos cinco primeiros
+                intervalos:
+                <pre><code>F_5 = 1 + 1 + 2 + 2 + 2 = 8</code></pre>
+              </li>
+              <li>
+                <strong>F_6:</strong> A frequência acumulada do sexto intervalo
+                (1.85 - 1.90) é a soma das frequências dos seis primeiros
+                intervalos:
+                <pre><code>F_6 = 1 + 1 + 2 + 2 + 2 + 2 = 10</code></pre>
+              </li>
+            </ul>
+          </ol>
+        </div>
+      </div>
+
+      <div class="card my-3">
+        <div class="card-header">
+          <h2>Dados</h2>
+        </div>
+        <div class="card-body">
           <table class="table mt-4" id="tabela">
             <thead>
               <tr>
@@ -121,6 +309,68 @@
               <li><strong>Duplicidade de Nomes:</strong> ${
                 Object.keys(nomes).length
               } nomes únicos foram registrados, e alguns nomes aparecem mais de uma vez.</li>
+            `;
+          });
+      });
+    </script>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        fetch("database.json")
+          .then((response) => response.json())
+          .then((data) => {
+            const tbody = document.querySelector("#tabela tbody");
+            const alturas = [];
+            const envergaduras = [];
+
+            data.forEach((row) => {
+              const tr = document.createElement("tr");
+              tr.innerHTML = `<td>${row.nome}</td><td>${row.altura}m</td><td>${row.envergadura}m</td>`;
+              tbody.appendChild(tr);
+
+              alturas.push(parseFloat(row.altura));
+              envergaduras.push(parseFloat(row.envergadura));
+            });
+
+            // Funções auxiliares
+            const calcularMedia = (arr) =>
+              (arr.reduce((a, b) => a + b, 0) / arr.length).toFixed(2);
+            const calcularMediana = (arr) => {
+              const sorted = arr.slice().sort((a, b) => a - b);
+              const mid = Math.floor(sorted.length / 2);
+              return sorted.length % 2 !== 0
+                ? sorted[mid]
+                : ((sorted[mid - 1] + sorted[mid]) / 2).toFixed(2);
+            };
+            const calcularModa = (arr) => {
+              const freq = {};
+              arr.forEach((item) => (freq[item] = (freq[item] || 0) + 1));
+              const maxFreq = Math.max(...Object.values(freq));
+              const modas = Object.keys(freq).filter(
+                (key) => freq[key] === maxFreq
+              );
+              return modas.join(", ");
+            };
+
+            // Cálculos
+            const mediaAltura = calcularMedia(alturas);
+            const medianaAltura = calcularMediana(alturas);
+            const modaAltura = calcularModa(alturas);
+
+            const mediaEnvergadura = calcularMedia(envergaduras);
+            const medianaEnvergadura = calcularMediana(envergaduras);
+            const modaEnvergadura = calcularModa(envergaduras);
+
+            // Inserir resultados no HTML
+            const calculosEstatisticos = document.getElementById(
+              "calculos-estatisticos"
+            );
+            calculosEstatisticos.innerHTML = `
+              <li><strong>Média Altura:</strong> ${mediaAltura} m</li>
+              <li><strong>Mediana Altura:</strong> ${medianaAltura} m</li>
+              <li><strong>Moda Altura:</strong> ${modaAltura} m</li>
+              <li><strong>Média Envergadura:</strong> ${mediaEnvergadura} m</li>
+              <li><strong>Mediana Envergadura:</strong> ${medianaEnvergadura} m</li>
+              <li><strong>Moda Envergadura:</strong> ${modaEnvergadura} m</li>
             `;
           });
       });

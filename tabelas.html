@@ -46,7 +46,43 @@
 
     <!-- Tabela -->
     <div class="container mt-5">
-      <div class="card">
+      <!-- Tabelas de Frequência -->
+      <div class="card mt-3">
+        <div class="card-header">
+          <h2>Tabelas de Frequência</h2>
+        </div>
+        <div class="card-body">
+          <h3>Frequência de Altura</h3>
+          <table class="table table-striped" id="frequencia-altura">
+            <thead>
+              <tr>
+                <th>Altura (m)</th>
+                <th>Frequência</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+      <div class="card mt-3">
+        <div class="card-header">
+          <h2>Tabelas de Frequência</h2>
+        </div>
+        <div class="card-body">
+          <h3>Frequência de Envergadura</h3>
+          <table class="table table-striped" id="frequencia-envergadura">
+            <thead>
+              <tr>
+                <th>Envergadura (m)</th>
+                <th>Frequência</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="card mt-3">
         <div class="card-header">
           <div class="d-flex justify-content-between">
             <h2 id="tabelas">Tabela de Altura e Envergadura</h2>
@@ -87,7 +123,45 @@
               tr.innerHTML = `<td>${row.nome}</td><td>${row.altura}m</td><td>${row.envergadura}m</td>`;
               tbody.appendChild(tr);
             });
+
+            generateFrequencyTables(data);
           });
+
+        function generateFrequencyTables(data) {
+          const alturaFreq = {};
+          const envergaduraFreq = {};
+
+          data.forEach((item) => {
+            const altura = parseFloat(item.altura);
+            const envergadura = parseFloat(item.envergadura);
+
+            alturaFreq[altura] = (alturaFreq[altura] || 0) + 1;
+            envergaduraFreq[envergadura] =
+              (envergaduraFreq[envergadura] || 0) + 1;
+          });
+
+          const alturaTableBody = document.querySelector(
+            "#frequencia-altura tbody"
+          );
+          Object.keys(alturaFreq)
+            .sort((a, b) => a - b)
+            .forEach((altura) => {
+              const tr = document.createElement("tr");
+              tr.innerHTML = `<td>${altura}m</td><td>${alturaFreq[altura]}</td>`;
+              alturaTableBody.appendChild(tr);
+            });
+
+          const envergaduraTableBody = document.querySelector(
+            "#frequencia-envergadura tbody"
+          );
+          Object.keys(envergaduraFreq)
+            .sort((a, b) => a - b)
+            .forEach((envergadura) => {
+              const tr = document.createElement("tr");
+              tr.innerHTML = `<td>${envergadura}m</td><td>${envergaduraFreq[envergadura]}</td>`;
+              envergaduraTableBody.appendChild(tr);
+            });
+        }
 
         let currentSortColumn = null;
         let sortDirection = "asc";
@@ -128,19 +202,15 @@
 
         window.clearFilters = function () {
           const tbody = document.querySelector("#tabela tbody");
-          const originalData = [];
-
           fetch("database.json")
             .then((response) => response.json())
             .then((data) => {
+              tbody.innerHTML = "";
               data.forEach((row) => {
                 const tr = document.createElement("tr");
                 tr.innerHTML = `<td>${row.nome}</td><td>${row.altura}m</td><td>${row.envergadura}m</td>`;
-                originalData.push(tr);
+                tbody.appendChild(tr);
               });
-
-              tbody.innerHTML = "";
-              originalData.forEach((row) => tbody.appendChild(row));
             });
 
           currentSortColumn = null;
